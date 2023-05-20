@@ -1,107 +1,65 @@
 import { Component, OnInit } from "@angular/core";
 import { CurrencyService } from '../../services/currency.service';
-import { IExchangeInfo } from '../../models/exchangeInfo';
+import { ICurrency } from '../../models/currency';
+import { Order } from "../../enums/order";
 
 @Component({
     selector: 'app-exchange',
     templateUrl: './exchange.component.html'
 })
 export class ExchangeComponent implements OnInit {
-    constructor(private currencyService: CurrencyService) {}
+    constructor(private currencyService: CurrencyService) { }
 
-    exchangeInfo: IExchangeInfo;
-    currencies: readonly string[] = ["UAH", "USD", "EUR"];
-    firstSelectedCurrency: string = this.currencies[0];
-    secondSelectedCurrency: string = this.currencies[0];
+    recuiredCurrencies: readonly string[] = ["UAH", "USD", "EUR"]
+    currencies: ICurrency[];
+    firstSelectedCurrency: ICurrency;
+    secondSelectedCurrency: ICurrency;
     firstCurrencyValue: number = 0;
     secondCurrencyValue: number = 0;
-    usdMeasure: number = 0;
-    eurMeasure: number = 0 ;
+    orderEnum: typeof Order = Order;
     
     ngOnInit(): void {
-        this.currencyService.getExchangeInfo()
-            .subscribe(response => {
-                this.exchangeInfo = response;
-                this.usdMeasure = 1 / this.exchangeInfo.rates.USD;
-                this.eurMeasure = 1 / this.exchangeInfo.rates.EUR;
-            });
+        this.currencies = this.currencyService.getRequiredCurrencies(this.recuiredCurrencies);
+        this.firstSelectedCurrency = this.currencies[0];
+        this.secondSelectedCurrency = this.currencies[0];
     }
 
-    changeCurrency(event: any, currencyNumber: Number){
-        if(currencyNumber == 1){
-            this.firstSelectedCurrency = event.value
-            this.convert(1);
-        }else if (currencyNumber == 2){
-            this.secondSelectedCurrency = event.value
-            this.convert(2);
+    changeCurrency(currency: ICurrency, order: Order) : void {
+        if(order == Order.first){
+            this.firstSelectedCurrency = currency;
+            this.changeValue(order);
+        }else if (order == Order.second){
+            this.secondSelectedCurrency = currency;
+            this.changeValue(order);
         }
     }
 
-    convert(numberOfChangedInput: number){
-        if(numberOfChangedInput == 1)
-        {
-            this.secondCurrencyValue = this.determineExchangeDirectionAndGetCalculation(this.firstSelectedCurrency, 
-                this.secondSelectedCurrency,
+    changeValue(orderOfChangedInput: Order) : void {
+        if(orderOfChangedInput == Order.first){
+            this.secondCurrencyValue = this.convert(this.firstSelectedCurrency.rate, 
+                this.secondSelectedCurrency.rate, 
                 this.firstCurrencyValue);
-        }else if(numberOfChangedInput == 2){
-            this.firstCurrencyValue = this.determineExchangeDirectionAndGetCalculation(this.secondSelectedCurrency, 
-                this.firstSelectedCurrency,
+        }else if (orderOfChangedInput == Order.second){
+            this.firstCurrencyValue = this.convert(this.secondSelectedCurrency.rate, 
+                this.firstSelectedCurrency.rate, 
                 this.secondCurrencyValue);
         }
     }
 
-    determineExchangeDirectionAndGetCalculation(fromCurrecy: string, toCurrency:string, value: number)
-    {
-        if(fromCurrecy == "UAH" && toCurrency == "USD")
-        {
-            return this.uahToUsd(value);
-        }else if(fromCurrecy == "UAH" && toCurrency == "EUR")
-        {
-            return this.uahToEur(value);
-        }else if(fromCurrecy == "USD" && toCurrency == "EUR")
-        {
-            return this.usdToEur(value);
-        }else if(fromCurrecy == "USD" && toCurrency == "UAH")
-        {
-            return this.usdToUah(value);
-        }else if(fromCurrecy == "EUR" && toCurrency == "USD")
-        {
-            return this.eurToUsd(value);
-        }else if(fromCurrecy == "EUR" && toCurrency == "UAH")
-        {
-            return this.eurToUah(value);
+    convert(from: number, to: number, value: number) : number {
+        if(from !== to){
+            if(from === 1 || to === 1){
+                if(from < to)
+                {
+                    return (to/from)*value;
+                }else{
+                    return (from*to)*value;
+                }
+            }else{
+                return (to/from)*value;
+            }
         }else{
-            return value;
+            return value;   
         }
-    }
-
-    usdToUah(value: number)
-    {
-        return (value * this.usdMeasure); 
-    }
-
-    uahToUsd(value: number)
-    {
-        return (value * this.usdMeasure);
-    }
-
-    eurToUah(value: number)
-    {
-        return (value * this.eurMeasure); 
-    }
-
-    uahToEur(value: number)
-    {
-        return (value * this.usdMeasure);
-    }
-
-    usdToEur(value: number)
-    {
-        return value*(this.usdMeasure/this.eurMeasure);
-    }
-
-    eurToUsd(value: number)
-    {
-        return value*(this.eurMeasure/this.usdMeasure);
     }
 }
