@@ -22,7 +22,7 @@ export class ExchangeComponent implements OnInit {
         this.secondSelectedCurrency = this.currencies[0];
     }
 
-    changeCurrency(event: any, currencyNumber: number){
+    changeCurrency(event: any, currencyNumber: number) : void {
         if(currencyNumber == 1){
             this.firstSelectedCurrency = event.value;
             this.changeValue(currencyNumber);
@@ -32,7 +32,7 @@ export class ExchangeComponent implements OnInit {
         }
     }
 
-    changeValue(numberOfChangedInput: number){
+    changeValue(numberOfChangedInput: number) : void {
         if(numberOfChangedInput == 1){
             this.secondCurrencyValue = this.convert(this.firstSelectedCurrency.rate, 
                 this.secondSelectedCurrency.rate, 
@@ -44,7 +44,7 @@ export class ExchangeComponent implements OnInit {
         }
     }
 
-    convert(from: number, to: number, value: number){
+    convert(from: number, to: number, value: number) : number {
         if(from !== to){
             if(from === 1 || to === 1){
                 if(from < to)
