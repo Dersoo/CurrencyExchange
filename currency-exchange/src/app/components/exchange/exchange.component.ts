@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { CurrencyService } from '../../services/currency.service';
 import { ICurrency } from '../../models/currency';
+import { Order } from "../../enums/order";
 
 @Component({
     selector: 'app-exchange',
@@ -15,6 +16,7 @@ export class ExchangeComponent implements OnInit {
     secondSelectedCurrency: ICurrency;
     firstCurrencyValue: number = 0;
     secondCurrencyValue: number = 0;
+    orderEnum: typeof Order = Order;
     
     ngOnInit(): void {
         this.currencies = this.currencyService.getRequiredCurrencies(this.recuiredCurrencies);
@@ -22,22 +24,22 @@ export class ExchangeComponent implements OnInit {
         this.secondSelectedCurrency = this.currencies[0];
     }
 
-    changeCurrency(currency: ICurrency, currencyNumber: number) : void {
-        if(currencyNumber == 1){
+    changeCurrency(currency: ICurrency, order: Order) : void {
+        if(order == Order.first){
             this.firstSelectedCurrency = currency;
-            this.changeValue(currencyNumber);
-        }else if (currencyNumber == 2){
+            this.changeValue(order);
+        }else if (order == Order.second){
             this.secondSelectedCurrency = currency;
-            this.changeValue(currencyNumber);
+            this.changeValue(order);
         }
     }
 
-    changeValue(numberOfChangedInput: number) : void {
-        if(numberOfChangedInput == 1){
+    changeValue(orderOfChangedInput: Order) : void {
+        if(orderOfChangedInput == Order.first){
             this.secondCurrencyValue = this.convert(this.firstSelectedCurrency.rate, 
                 this.secondSelectedCurrency.rate, 
                 this.firstCurrencyValue);
-        }else if (numberOfChangedInput == 2){
+        }else if (orderOfChangedInput == Order.second){
             this.firstCurrencyValue = this.convert(this.secondSelectedCurrency.rate, 
                 this.firstSelectedCurrency.rate, 
                 this.secondCurrencyValue);

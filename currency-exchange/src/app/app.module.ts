@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { CurrencyDisplayComponent } from './components/currency-display/currency-display.component';
 import { ExchangeComponent } from './components/exchange/exchange.component';
+import { SelectListComponent } from './components/UI/select-list/select-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from "@angular/material/select";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     NavMenuComponent,
     CurrencyDisplayComponent,
-    ExchangeComponent
+    ExchangeComponent,
+    SelectListComponent
   ],
   imports: [
     BrowserModule,

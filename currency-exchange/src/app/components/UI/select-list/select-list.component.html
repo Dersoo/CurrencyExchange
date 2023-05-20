@@ -1,0 +1,5 @@
+<mat-select [(value)]="selectedCurrency"
+            (selectionChange)="changeCurrency($event.value)"
+            class="">
+    <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</mat-option>
+</mat-select>
