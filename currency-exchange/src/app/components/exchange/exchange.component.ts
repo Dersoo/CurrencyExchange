@@ -22,12 +22,12 @@ export class ExchangeComponent implements OnInit {
         this.secondSelectedCurrency = this.currencies[0];
     }
 
-    changeCurrency(event: any, currencyNumber: number) : void {
+    changeCurrency(currency: ICurrency, currencyNumber: number) : void {
         if(currencyNumber == 1){
-            this.firstSelectedCurrency = event.value;
+            this.firstSelectedCurrency = currency;
             this.changeValue(currencyNumber);
         }else if (currencyNumber == 2){
-            this.secondSelectedCurrency = event.value;
+            this.secondSelectedCurrency = currency;
             this.changeValue(currencyNumber);
         }
     }

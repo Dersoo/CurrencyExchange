@@ -4,7 +4,7 @@
         <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/3">
                 <mat-select [(value)]="firstSelectedCurrency"
-                            (selectionChange)="changeCurrency($event, 1)"
+                            (selectionChange)="changeCurrency($event.value, 1)"
                             class="">
                     <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</mat-option>
                 </mat-select>
@@ -19,7 +19,7 @@
             <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/3">
                 <mat-select [(value)]="secondSelectedCurrency"
-                            (selectionChange)="changeCurrency($event, 2)"
+                            (selectionChange)="changeCurrency($event.value, 2)"
                             class="">
                     <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</mat-option>
                 </mat-select>
