@@ -6,14 +6,14 @@
                 <mat-select [(value)]="firstSelectedCurrency"
                             (selectionChange)="changeCurrency($event, 1)"
                             class="">
-                    <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency}}</mat-option>
+                    <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</mat-option>
                 </mat-select>
             </div>
             <div class="md:w-2/3">
                 <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
                 type="text" 
                 [(ngModel)]="firstCurrencyValue"
-                (change)="convert(1)">
+                (change)="changeValue(1)">
             </div>
             </div>
             <div class="md:flex md:items-center mb-6">
@@ -21,14 +21,14 @@
                 <mat-select [(value)]="secondSelectedCurrency"
                             (selectionChange)="changeCurrency($event, 2)"
                             class="">
-                    <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency}}</mat-option>
+                    <mat-option *ngFor="let currency of currencies" [value]="currency">{{currency.code}}</mat-option>
                 </mat-select>
             </div>
             <div class="md:w-2/3">
                 <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
                 type="text" 
                 [(ngModel)]="secondCurrencyValue"
-                (change)="convert(2)">
+                (change)="changeValue(2)">
             </div>
         </div>
     </div>
